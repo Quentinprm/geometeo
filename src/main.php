@@ -40,7 +40,7 @@ var_dump($xmlIP);
 echo "Latitude : $xmlIP->Latitude, Longitude : $xmlIP->Longitude";
 
 $html .= "
-			<script src = \"app.js\"></src>
+			<script src = \"app.js\"></script>
 		</body>
 </html>";
 
