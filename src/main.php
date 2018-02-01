@@ -39,7 +39,7 @@ $xml=simplexml_load_string($content);
 
 			$station=null;
 
-			foreach($xml_stan->markers->markers as s){
+			foreach($xml_stan->markers->markers as $s){
 				$content_details= file_get_contents($details.$s->attributes()->number,false,$context);
 				$lt=$s.attributes()->lat;
 				$lg=$s.attributes()->lng;
