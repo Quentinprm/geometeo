@@ -24,9 +24,42 @@ $xml=simplexml_load_string($content);
 		$xslt=new XSLTProcessor();
 		$xslt->importStylesheet($xsl);
 		print $xslt->transformToXml($xml_meteo);
+		$stan="http://www.velostanlib.fr/service/carto/";
+		$content_stan= file_get_contents($stan,false,$context);
+		$xml_stam=simplexml_load_string($content_stan);
+		if(!empty($xml_stan)){
+			$details="http://www.velostanlib.fr/service/stationdetails/nancy/";
+			echo"<script>
+			var mymap = L.map('mapid').setView([$lat,$long], 13);
+			var circle= L.circle([$lat,$long],{
+				color:'blue',
+				radius:40
+			}).addTo(mymap);
+			circle.bindPopup().openPopup();";
+
+			$station=null;
+
+			foreach($xml_stan->markers->markers as s){
+				$content_details= file_get_contents($details.$s->attributes()->number,false,$context);
+				$lt=$s.attributes()->lat;
+				$lg=$s.attributes()->lng;
+				echo "var marker=L.marker([lt,lg]).addTo(mymap)";
+				$station_xml=simplexml_load_string($content_details);
+				$address=$s->attributes()->fullAddress;
+
+				if(!empty($station_xml)){
+					echo "marker.bindPopup(\"<b>$station_adresse </b><br/>Vélos libre: $station_details_xml->available <br/>Places libre: $station_details_xml->free <br/>\");";
+          }
+				}
+			}else{
+				echo " API Velo stan inaccessible"
+			}
+
+		}else{
+			echo "API Meteo inaccessible"
+		}
 		echo "
-		<script>
-		var mymap = L.map('mapid').setView([$lat,$long], 13);
+
 		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 			maxZoom: 18,
 			attribution: 'Map data &copy; <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors, ' +
