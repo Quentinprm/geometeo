@@ -26,7 +26,7 @@
                             'request_fulluri'=>true
                         )
                     );
-
+                    //$stream_context_set_default($default_opts);
                     $ip_link = "http://ip-api.com/xml/";
                     $ip_data = file_get_contents($ip_link);
                     $ip_xml = simplexml_load_string($ip_data);
@@ -40,6 +40,7 @@
                     $meteo_xml = simplexml_load_string($meteo_data);
                     if(!is_null($meteo_xml)){
                     ?>
+                    <div id="meteo">
                       <div class="ui grid" style="margin-top: 20px;">
                         <div class="eight wide centered row">
                         <?php
@@ -52,8 +53,10 @@
                       echo $proc->transformToXML($meteo_xml);
                   ?>
                 </div>
+              </div>
+              </div>
                 <div id="mapid" style="height: 600px; width: 60%; margin: auto; z-index: 0"></div>
-            </div>
+
             <script>
                 var redIcon = new L.Icon({
                     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
